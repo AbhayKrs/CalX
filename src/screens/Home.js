@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native";
+import { SafeAreaView, View, Text, Button } from "react-native";
 import { useColorScheme } from "nativewind";
 import CalendarStrip from 'react-native-calendar-strip';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import List from "../components/List";
 
-const Home = (props) => {
+const Home = ({ navigation }) => {
     const { colorScheme } = useColorScheme();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [selectedDay, setSelectedDay] = useState(new Date().getDay());
@@ -53,7 +53,17 @@ const Home = (props) => {
                     AsyncStorage.setItem('tracker_day', dt.getDay() + "");
                 }}
             />
-            <List selectedDay={selectedDay} selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+            <View className="my-auto mx-3">
+                <Button
+                    onPress={() => navigation.navigate("Routine")}
+                    title="Select Routine"
+                    color="#841584"
+                    accessibilityLabel="Learn more about this purple button"
+                />
+                <Text className="font-caviar text-center text-white">You have not tracked any workout routine yet.</Text>
+                <Text className="font-caviar text-center text-white">Select a workout routine or track individual exercises. </Text>
+            </View>
+            {/* <List selectedDay={selectedDay} selectedDate={selectedDate} setSelectedDate={setSelectedDate} /> */}
         </SafeAreaView>
     )
 }
