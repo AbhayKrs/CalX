@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/AntipastoProRegular.ttf",
+      "sha1": "51bd1daac40fbc49a135821df5dffeb1db201380"
+    },
+    {
+      "path": "assets/fonts/Calypsoka.ttf",
+      "sha1": "2f396adddde018183ed555b2016d138037579cc4"
+    },
+    {
+      "path": "assets/fonts/CaviarDreams.ttf",
+      "sha1": "fdbae680e53ea7f5c7a47d59bc5588553ff97f40"
+    },
+    {
+      "path": "assets/fonts/CaviarDreamsBold.ttf",
+      "sha1": "4550f95cd940c01187631bc93d6c59ca1bedeb65"
+    },
+    {
+      "path": "assets/fonts/JosefinSansLight.ttf",
+      "sha1": "2913c10d2c6b2b12f4c4844381523c7a790e1e10"
+    },
+    {
+      "path": "assets/fonts/JosefinSansRegular.ttf",
+      "sha1": "95f405d66578ae639e154a5249f4590098684ba1"
+    }
+  ]
+}
