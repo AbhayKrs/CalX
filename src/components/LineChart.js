@@ -5,7 +5,7 @@ import React from "react";
 import * as d3 from "d3";
 import { useColorScheme } from "nativewind";
 
-const LineChart = ({ data }) => {
+const LineChart = ({ data, target, activePoint, setActivePoint }) => {
     const svgRef = useRef(null);
     const { colorScheme } = useColorScheme();
 
@@ -15,27 +15,25 @@ const LineChart = ({ data }) => {
     const [paths, setPaths] = useState({ curPath: '', tarPath: '', areaPath: '' });
     const [xTicks, setXTicks] = useState([]);
     const [yTicks, setYTicks] = useState([]);
-    const [activePoint, setActivePoint] = useState(null); // To track the active (hovered/pressed) point
     const [pressedPoint, setPressedPoint] = useState(null);  // To track the pressed point
 
     // const xLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const dataset = data.map((d, i) => ({ x: i, y: d }));
+
     const xLabels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
     const targets = [87.5, 86, 85, 84, 83, 80, 78, 77, 76, 75, 74.5, 74, 73, 72, 70];
     const maxY = Math.round(Math.max(...data) / 10) * 10 + 10;
     const minY = Math.round(Math.min(...data) / 10) * 10 - 10;
 
+    const xScale = d3.scaleLinear()
+        .domain([0, data.length - 1])
+        .range([40, width - 20]);
+
+    const yScale = d3.scaleLinear()
+        .domain([minY, maxY])
+        .range([height - 40, 40]);
+
     useEffect(() => {
-        const dataset = data.map((d, i) => ({ x: i, y: d }));
-
-        console.log("test", maxY, minY);
-
-        const xScale = d3.scaleLinear()
-            .domain([0, dataset.length - 1])
-            .range([40, width - 20]);
-
-        const yScale = d3.scaleLinear()
-            .domain([minY, maxY])
-            .range([height - 40, 40]);
 
         const lineFn = d3.line()
             .x(d => xScale(d.x))
@@ -69,8 +67,8 @@ const LineChart = ({ data }) => {
 
     // Handle touch events to simulate hover effect
     const handlePointPress = (index) => {
-        console.log("Data", index);
-        setActivePoint(index);
+        console.log("Test", index);
+        setActivePoint(index - 1);
         setPressedPoint(index - 1);  // Track the pressed point
     };
 
@@ -79,7 +77,7 @@ const LineChart = ({ data }) => {
         setPressedPoint(null);  // Reset the pressed point
     };
 
-    const pressedPointX = pressedPoint !== null ? d3.scaleLinear().domain([0, data.length - 1]).range([40, width - 20])(pressedPoint + 1) : null;
+    const pressedPointX = pressedPoint !== null ? d3.scaleLinear().domain([1, data.length]).range([40, width - 20])(pressedPoint + 1) : null;
     const pressedPointY = pressedPoint !== null ? d3.scaleLinear().domain([minY, 100]).range([height - 40, 40])(data[pressedPoint]) : null;
 
     return (
@@ -94,6 +92,27 @@ const LineChart = ({ data }) => {
                 ry={5}  // Vertical radius
                 fill={colorScheme === "light" ? "#e2e8f0" : "#262626"}  // Background color
             />
+
+            <Text
+                x={190}  // Positioning near the end of the line
+                y={20}  // Adjusting slightly above the line
+                fontSize="12"
+                fill={colorScheme === "light" ? "#262626" : "#9ca3af"}
+                textAnchor="end"
+            >
+                Click on the point to view/edit data
+            </Text>
+
+            <Text
+                x={width - 10}  // Positioning near the end of the line
+                y={20}  // Adjusting slightly above the line
+                fontSize="12"
+                fill={colorScheme === "light" ? "#10b981" : "#059669"}
+                textAnchor="end"
+                fontWeight="bold"
+            >
+                T = Target
+            </Text>
 
             {/* Grid Lines */}
             <G stroke="#e0e0e0" strokeWidth="1">
@@ -145,32 +164,55 @@ const LineChart = ({ data }) => {
                 ))}
             </G>
 
-            <Path d={paths.areaPath} stroke={"none"} fill={"#000"} fillOpacity={0.2} />
+            <Path d={paths.areaPath} stroke={"none"} fill={colorScheme === "light" ? "#000" : "#fff"} fillOpacity={0.5} />
 
-            <Path d={paths.linePath} stroke={"#2563eb"} fill={"none"} strokeWidth={1.5} />
-            <Path d={paths.tarPath} stroke={colorScheme === "light" ? "#ec4899" : "#ec4899"} fill={"none"} strokeWidth={1.5} />
+            <Path d={paths.linePath} stroke={colorScheme === "light" ? "#000" : "#fcfcfc"} fill={"none"} strokeWidth={1.5} />
+            <Path d={paths.tarPath} stroke={colorScheme === "light" ? "#f472b6" : "#f472b6"} fill={"none"} strokeWidth={1.5} />
 
             {/* Pressed line */}
             {pressedPoint !== null && pressedPointX !== null && pressedPointY !== null && (
                 <Line
                     x1={pressedPointX}
-                    y1={pressedPointY}
+                    y1={pressedPointY + 8}
                     x2={pressedPointX}
                     y2={height - 40}
-                    stroke="#e11d48"
+                    stroke={"#1d4ed8"}
                     strokeWidth={2}
                     strokeDasharray="4,4"
                 />
             )}
 
+            {/* Target line */}
+            <Line
+                x1={40}
+                y1={yScale(target)}
+                x2={width - 20}
+                y2={yScale(target)}
+                stroke={colorScheme === "light" ? "#10b981" : "#059669"}
+                strokeWidth={2}
+                strokeDasharray="4,4"
+            />
+            <Text
+                x={width - 8}  // Positioning near the end of the line
+                y={yScale(target) + 4}  // Adjusting slightly above the line
+                fontSize="12"
+                fill={colorScheme === "light" ? "#10b981" : "#059669"}
+                textAnchor="end"
+                fontWeight="bold"
+            >
+                T
+            </Text>
+
             {data.map((d, i) => (
                 <Circle
                     key={i}
-                    cx={d3.scaleLinear().domain([0, data.length - 1]).range([40, width - 20])(i)}
-                    cy={d3.scaleLinear().domain([minY, 100]).range([height - 40, 40])(d)}
-                    r={activePoint === i ? 6 : 4}  // Change size on hover
-                    fill={activePoint === i ? "#e11d48" : "#1d4ed8"}  // Change color on hover
-                    onPress={() => handlePointPress(i)}
+                    cx={xScale(i)}
+                    cy={yScale(d)}
+                    r={3}  // Change size on hover
+                    fill={activePoint === i ? "#1d4ed8" : colorScheme === "light" ? "#000" : "#fcfcfc"}  // Change color on hover
+                    stroke={activePoint === i ? "#1d4ed8" : colorScheme === "light" ? "#000" : "#fcfcfc"}
+                    strokeWidth={2}
+                    onPress={() => handlePointPress(i + 1)}
                     onPressOut={handlePointRelease}
                 />
             ))}
