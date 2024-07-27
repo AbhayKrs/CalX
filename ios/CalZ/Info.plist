@@ -59,6 +59,10 @@
 		<string>CaviarDreamsBold.ttf</string>
 		<string>JosefinSansLight.ttf</string>
 		<string>JosefinSansRegular.ttf</string>
+		<string>Roboto.ttf</string>
+		<string>RobotoBold.ttf</string>
+		<string>Nunito.ttf</string>
+		<string>NunitoBold.ttf</string>
 	</array>
 </dict>
 </plist>

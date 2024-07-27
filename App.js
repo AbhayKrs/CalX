@@ -5,7 +5,7 @@ import { createNavigationContainerRef } from "@react-navigation/native";
 
 
 // import StackNav from './src/components/StackNav';
-import NavRoot from './src/components/NavRoot';
+import Routes from './Routes';
 import json_data from './src/utils/workouts.json';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,7 +24,7 @@ const App = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <NavRoot navref={navigationRef} />
+      <Routes navref={navigationRef} />
     </NavigationContainer>
   );
 }

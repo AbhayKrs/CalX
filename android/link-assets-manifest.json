@@ -24,6 +24,22 @@
     {
       "path": "assets/fonts/JosefinSansRegular.ttf",
       "sha1": "95f405d66578ae639e154a5249f4590098684ba1"
+    },
+    {
+      "path": "assets/fonts/Nunito.ttf",
+      "sha1": "e920ebbb6ae345487d586c6f9330f60537697ea1"
+    },
+    {
+      "path": "assets/fonts/NunitoBold.ttf",
+      "sha1": "4e7b8b3bd1184e4faffe7379f69c4cacfb7ff702"
+    },
+    {
+      "path": "assets/fonts/Roboto.ttf",
+      "sha1": "dd1b1db13ff1f72138c134c62f38fef83749f36a"
+    },
+    {
+      "path": "assets/fonts/RobotoBold.ttf",
+      "sha1": "0ce37ced9c5fcac9bdc452a432c1258870ba4677"
     }
   ]
 }
